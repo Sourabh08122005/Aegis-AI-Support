@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
+import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 app.use(express.json());
 
@@ -23,11 +23,11 @@ app.post("/api/chat", async (req, res) => {
 
   try {
     const startTime = Date.now();
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = (genAI as any).getGenerativeModel({ model: "gemini-1.5-flash" });
 
     // 1. Input Moderation
     const lastMessage = messages[messages.length - 1].content;
-    const safetyModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const safetyModel = (genAI as any).getGenerativeModel({ model: "gemini-1.5-flash" });
     const safetyCheck = await safetyModel.generateContent(`Analyze the following customer support query for harmful intent, toxicity, or abuse. Respond with ONLY a JSON object: { "isSafe": boolean, "reasons": string[], "toxicityScore": number (0-1) }. Query: "${lastMessage}"`);
     const safetyResult = JSON.parse(safetyCheck.response.text().replace(/```json|```/g, "").trim());
 

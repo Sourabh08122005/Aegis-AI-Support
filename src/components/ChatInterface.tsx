@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { User } from 'firebase/auth';
 import { collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -7,7 +7,7 @@ import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { Badge } from './ui/badge';
 import { Card } from './ui/card';
-import { Send, User as UserIcon, Bot, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { Send, User as UserIcon, Bot, ShieldCheck, AlertCircle, Loader2, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 
