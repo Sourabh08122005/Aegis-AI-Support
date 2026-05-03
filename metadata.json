@@ -1,0 +1,6 @@
+{
+  "name": "Aegis AI Support",
+  "description": "An AI-powered customer support system with integrated safety guards, RAG-enhanced responses, and full observability metrics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

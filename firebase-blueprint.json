@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "Ticket": {
+      "title": "Support Ticket",
+      "description": "Represents a customer support interaction session.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "subject": { "type": "string" }
+      },
+      "required": ["userId", "status", "createdAt", "updatedAt"]
+    },
+    "Message": {
+      "title": "Chat Message",
+      "description": "A single message within a support ticket.",
+      "type": "object",
+      "properties": {
+        "ticketId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "assistant", "system"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "safetyFlags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["ticketId", "role", "content", "timestamp"]
+    },
+    "SafetyLog": {
+      "title": "Safety Audit Log",
+      "description": "Logs details of safety checks performed on inputs and outputs.",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "type": { "type": "string", "enum": ["input", "output"] },
+        "content": { "type": "string" },
+        "isSafe": { "type": "boolean" },
+        "safetyScore": { "type": "number" },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "userId": { "type": "string" }
+      },
+      "required": ["timestamp", "type", "content", "isSafe"]
+    },
+    "Metric": {
+      "title": "System Metric",
+      "description": "Aggregated metrics for observability.",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "totalQueries": { "type": "number" },
+        "unsafeQueries": { "type": "number" },
+        "avgLatency": { "type": "number" },
+        "errorCount": { "type": "number" }
+      },
+      "required": ["date"]
+    }
+  },
+  "firestore": {
+    "tickets": {
+      "schema": "Ticket",
+      "description": "Active and archived support tickets."
+    },
+    "tickets/{ticketId}/messages": {
+      "schema": "Message",
+      "description": "Messages for a specific ticket."
+    },
+    "logs": {
+      "schema": "SafetyLog",
+      "description": "Safety and audit logs."
+    },
+    "metrics": {
+      "schema": "Metric",
+      "description": "Daily aggregated system metrics."
+    }
+  }
+}
